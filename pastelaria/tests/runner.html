@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Testes - Pastelaria do Zé</title>
+  <style>
+    body { font-family: monospace; background: #1a1a2e; color: #eee; padding: 2rem; }
+    h1 { color: #e94560; }
+    .ok  { color: #4ecca3; }
+    .err { color: #e94560; }
+    .resumo { margin-top: 1rem; font-size: 1.2rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>🧪 Runner de Testes</h1>
+  <div id="output"></div>
+
+  <!-- Carregar todo o código de produção antes dos testes -->
+  <script src="../src/models/Produto.js"></script>
+  <script src="../src/models/ItemPedido.js"></script>
+  <script src="../src/models/Pedido.js"></script>
+  <script src="../src/models/Factories.js"></script>
+  <script src="../src/services/DescontoStrategy.js"></script>
+  <script src="../src/services/EventBus.js"></script>
+  <script src="../src/services/PedidoService.js"></script>
+  <script src="../src/repositories/PedidoRepository.js"></script>
+  <script src="../tests/pedido.test.js"></script>
+
+  <script>
+    const out = document.getElementById("output");
+    relatorio.resultados.forEach(r => {
+      const p = document.createElement("p");
+      p.className = r.ok ? "ok" : "err";
+      p.textContent = (r.ok ? "✅ " : "❌ ") + r.descricao + (r.erro ? " — " + r.erro : "");
+      out.appendChild(p);
+    });
+    const resumoEl = document.createElement("p");
+    resumoEl.className = "resumo " + (relatorio.failed === 0 ? "ok" : "err");
+    resumoEl.textContent = `Resultado: ${relatorio.passed}/${relatorio.total} testes passaram`;
+    out.appendChild(resumoEl);
+  </script>
+</body>
+</html>

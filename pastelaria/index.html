@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pastelaria do Zé</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/views/style.css">
+</head>
+<body>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
+
+  <!-- MODAL FINALIZADO -->
+  <div id="modal-finalizado" class="modal-overlay">
+    <div class="modal">
+      <h2>🎉 Pedido Finalizado!</h2>
+      <div id="modal-body"></div>
+      <div class="modal-acoes">
+        <a id="btn-whats-cliente" href="#" target="_blank" class="btn-whats">
+          📱 WhatsApp Cliente
+        </a>
+        <a id="btn-whats-estab" href="#" target="_blank" class="btn-whats secundario">
+          🏪 WhatsApp Estabelecimento
+        </a>
+        <button id="btn-fechar-modal" class="btn-fechar">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div class="app">
+
+    <header class="header">
+      <div class="header-inner">
+        <span class="logo-icon">🍴</span>
+        <div>
+          <h1 class="titulo">Pastelaria do Zé</h1>
+          <p class="subtitulo">Sistema de Pedidos</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+
+      <!-- FORMULÁRIO -->
+      <section class="card form-card">
+        <h2 class="card-titulo">Novo Item</h2>
+
+        <div class="form-grupo">
+          <label for="produto">Produto</label>
+          <select id="produto">
+            <option value="pastel">🥟 Pastel — R$ 5,00</option>
+            <option value="caldo">🍲 Caldo — R$ 7,00</option>
+            <option value="refrigerante">🥤 Refrigerante — R$ 4,00</option>
+            <option value="suco">🧃 Suco — R$ 6,00</option>
+          </select>
+        </div>
+
+        <div class="form-grupo">
+          <label for="qtd">Quantidade</label>
+          <input type="number" id="qtd" placeholder="Ex: 2" min="1">
+        </div>
+
+        <button id="btn-adicionar" class="btn btn-primario">＋ Adicionar</button>
+      </section>
+
+      <!-- LISTA DE ITENS -->
+      <section class="card lista-card">
+        <div class="lista-header">
+          <h2 class="card-titulo">Itens do Pedido</h2>
+          <button id="btn-remover" class="btn btn-ghost btn-sm">− Remover último</button>
+        </div>
+
+        <ul id="lista">
+          <li class="vazio">Nenhum item adicionado</li>
+        </ul>
+
+        <div class="total-row">
+          <span>Subtotal</span>
+          <span>R$ <strong id="total">0,00</strong></span>
+        </div>
+      </section>
+
+      <!-- CONTATOS WHATSAPP -->
+      <section class="card contatos-card">
+        <h2 class="card-titulo">Contatos WhatsApp</h2>
+        <p class="hint">Preencha para enviar o pedido automaticamente ao finalizar.</p>
+
+        <div class="form-grupo">
+          <label for="tel-cliente">Telefone do Cliente (com DDI)</label>
+          <input type="tel" id="tel-cliente" placeholder="Ex: 5588999999999">
+        </div>
+        <div class="form-grupo">
+          <label for="tel-estab">Telefone do Estabelecimento</label>
+          <input type="tel" id="tel-estab" placeholder="Ex: 5588888888888">
+        </div>
+      </section>
+
+      <!-- AÇÕES FINAIS -->
+      <div class="acoes">
+        <button id="btn-limpar" class="btn btn-ghost">🗑 Limpar</button>
+        <button id="btn-finalizar" class="btn btn-finalizar">✔ Finalizar Pedido</button>
+      </div>
+
+    </main>
+
+    <footer class="footer">
+      IFCE Boa Viagem · Arquitetura de Sistemas
+    </footer>
+
+  </div>
+
+  <!-- ======= SCRIPTS — ordem de dependência ======= -->
+  <script src="src/models/Produto.js"></script>
+  <script src="src/models/ItemPedido.js"></script>
+  <script src="src/models/Pedido.js"></script>
+  <script src="src/models/Factories.js"></script>
+  <script src="src/services/DescontoStrategy.js"></script>
+  <script src="src/services/EventBus.js"></script>
+  <script src="src/services/PedidoService.js"></script>
+  <script src="src/repositories/PedidoRepository.js"></script>
+  <script src="src/controllers/PedidoController.js"></script>
+  <script src="src/views/PedidoView.js"></script>
+
+  <!-- Bootstrap: instancia controller e view -->
+  <script>
+    const controller = new PedidoController();
+    const view       = new PedidoView(controller);
+  </script>
+
+</body>
+</html>

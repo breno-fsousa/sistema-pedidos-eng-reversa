@@ -1,0 +1,12 @@
+{
+  "name": "pastelaria-do-ze",
+  "version": "2.0.0",
+  "description": "Sistema de pedidos refatorado - IFCE Boa Viagem",
+  "scripts": {
+    "api": "npx json-server --watch db/db.json --port 3000",
+    "test": "node tests/pedido.test.js"
+  },
+  "devDependencies": {
+    "json-server": "^0.17.4"
+  }
+}
