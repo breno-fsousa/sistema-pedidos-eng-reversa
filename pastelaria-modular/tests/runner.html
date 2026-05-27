@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testes — Arquitetura Modular</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #0f0e17;
+      --surface: #1a1930;
+      --surface2:#232240;
+      --green:   #4ecca3;
+      --red:     #e94560;
+      --accent:  #ff6b35;
+      --blue:    #6c63ff;
+      --yellow:  #f7c948;
+      --muted:   #a7a9be;
+      --text:    #fffffe;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    header {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding-bottom: 1.5rem;
+    }
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), #f7c59f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: .3rem;
+    }
+    .subtitulo { font-size: .75rem; color: var(--muted); letter-spacing: .06em; }
+    #output { display: flex; flex-direction: column; gap: .35rem; max-width: 780px; }
+    .grupo {
+      margin-top: 1.3rem;
+      margin-bottom: .3rem;
+      font-family: 'Syne', sans-serif;
+      font-size: .68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .grupo::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: rgba(108,99,255,.2);
+    }
+    .teste {
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem;
+      background: var(--surface);
+      border-radius: 8px;
+      padding: .55rem 1rem;
+      font-size: .79rem;
+      line-height: 1.4;
+      border-left: 3px solid transparent;
+    }
+    .teste.ok  { border-left-color: var(--green); }
+    .teste.err { border-left-color: var(--red);   }
+    .icone { font-size: .95rem; flex-shrink: 0; margin-top: .05rem; }
+    .descricao { color: var(--text); }
+    .erro-msg  { color: var(--red); font-size: .72rem; margin-top: .18rem; }
+    .barra {
+      height: 5px;
+      background: rgba(255,255,255,.06);
+      border-radius: 3px;
+      margin-top: 1.8rem;
+      max-width: 780px;
+      overflow: hidden;
+    }
+    .barra-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 3px;
+      transition: width .7s ease;
+    }
+    .barra-fill.parcial { background: var(--red); }
+    .resumo {
+      margin-top: 1.4rem;
+      padding: 1rem 1.5rem;
+      background: var(--surface);
+      border-radius: 10px;
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: .75rem;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .resumo.tudo-ok  { border-color: rgba(78,204,163,.3);  color: var(--green); }
+    .resumo.tem-erro { border-color: rgba(233,69,96,.3);   color: var(--red);   }
+    .stats {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      margin-bottom: .5rem;
+    }
+    .stat {
+      background: var(--surface);
+      border-radius: 8px;
+      padding: .6rem 1rem;
+      font-size: .75rem;
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .stat strong { color: var(--text); font-size: 1.1rem; display: block; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🧪 Runner de Testes — Arquitetura Modular</h1>
+    <p class="subtitulo">Pastelaria do Zé · IFCE Boa Viagem · Prática Orientada 06</p>
+  </header>
+
+  <div id="output">
+    <p style="color:var(--muted); font-size:.85rem">Carregando módulos e executando testes...</p>
+  </div>
+
+  <!-- =====================================================
+       SHARED
+       ===================================================== -->
+  <script src="../src/shared/config/AppConfig.js"></script>
+  <script src="../src/shared/utils/EventBus.js"></script>
+  <script src="../src/shared/utils/Logger.js"></script>
+  <script src="../src/shared/utils/Formatters.js"></script>
+  <script src="../src/shared/middlewares/ErrorHandler.js"></script>
+  <script src="../src/shared/middlewares/AuthMiddleware.js"></script>
+
+  <!-- MODULE: auth -->
+  <script src="../src/modules/auth/entities/Usuario.js"></script>
+  <script src="../src/modules/auth/repositories/AuthRepository.js"></script>
+  <script src="../src/modules/auth/services/AuthService.js"></script>
+  <script src="../src/modules/auth/controllers/AuthController.js"></script>
+
+  <!-- MODULE: products -->
+  <script src="../src/modules/products/entities/Produto.js"></script>
+  <script src="../src/modules/products/repositories/ProductRepository.js"></script>
+  <script src="../src/modules/products/services/ProductService.js"></script>
+  <script src="../src/modules/products/controllers/ProductController.js"></script>
+
+  <!-- MODULE: payments -->
+  <script src="../src/modules/payments/entities/Pagamento.js"></script>
+  <script src="../src/modules/payments/repositories/PaymentRepository.js"></script>
+  <script src="../src/modules/payments/services/PaymentService.js"></script>
+  <script src="../src/modules/payments/controllers/PaymentController.js"></script>
+
+  <!-- MODULE: orders -->
+  <script src="../src/modules/orders/entities/ItemPedido.js"></script>
+  <script src="../src/modules/orders/entities/Pedido.js"></script>
+  <script src="../src/modules/orders/repositories/OrderRepository.js"></script>
+  <script src="../src/modules/orders/services/OrderService.js"></script>
+  <script src="../src/modules/orders/controllers/OrderController.js"></script>
+
+  <!-- Suite de testes -->
+  <script src="modular.test.js"></script>
+
+  <!-- Renderização dos resultados -->
+  <script>
+    const out = document.getElementById("output");
+    out.innerHTML = "";
+
+    // Stats rápidas
+    const statsEl = document.createElement("div");
+    statsEl.className = "stats";
+    [
+      { label: "Total",   valor: relatorio.total,  cor: "var(--text)"  },
+      { label: "Passou",  valor: relatorio.passed, cor: "var(--green)" },
+      { label: "Falhou",  valor: relatorio.failed, cor: relatorio.failed > 0 ? "var(--red)" : "var(--muted)" },
+    ].forEach(({ label, valor, cor }) => {
+      const s = document.createElement("div");
+      s.className = "stat";
+      s.innerHTML = `<strong style="color:${cor}">${valor}</strong>${label}`;
+      statsEl.appendChild(s);
+    });
+    out.appendChild(statsEl);
+
+    // Barra de progresso
+    const barra = document.createElement("div");
+    barra.className = "barra";
+    const fill = document.createElement("div");
+    fill.className = "barra-fill" + (relatorio.failed > 0 ? " parcial" : "");
+    fill.style.width = "0%";
+    barra.appendChild(fill);
+    out.appendChild(barra);
+    setTimeout(() => {
+      fill.style.width = Math.round((relatorio.passed / relatorio.total) * 100) + "%";
+    }, 100);
+
+    // Agrupa por prefixo [Grupo]
+    const grupos = {};
+    relatorio.resultados.forEach((r) => {
+      const match = r.descricao.match(/^\[([^\]]+)\]/);
+      const grupo = match ? match[1] : "Geral";
+      if (!grupos[grupo]) grupos[grupo] = [];
+      grupos[grupo].push(r);
+    });
+
+    Object.entries(grupos).forEach(([nome, testes]) => {
+      const g = document.createElement("div");
+      g.className = "grupo";
+      const passedGrupo = testes.filter(t => t.ok).length;
+      g.textContent = `${nome}  (${passedGrupo}/${testes.length})`;
+      out.appendChild(g);
+
+      testes.forEach((r) => {
+        const div = document.createElement("div");
+        div.className = `teste ${r.ok ? "ok" : "err"}`;
+
+        const icone = document.createElement("span");
+        icone.className = "icone";
+        icone.textContent = r.ok ? "✅" : "❌";
+
+        const corpo = document.createElement("div");
+        const desc = document.createElement("div");
+        desc.className = "descricao";
+        desc.textContent = r.descricao;
+        corpo.appendChild(desc);
+
+        if (r.erro) {
+          const err = document.createElement("div");
+          err.className = "erro-msg";
+          err.textContent = "↳ " + r.erro;
+          corpo.appendChild(err);
+        }
+
+        div.appendChild(icone);
+        div.appendChild(corpo);
+        out.appendChild(div);
+      });
+    });
+
+    // Resumo final
+    const resumo = document.createElement("div");
+    resumo.className = "resumo " + (relatorio.failed === 0 ? "tudo-ok" : "tem-erro");
+    resumo.innerHTML = relatorio.failed === 0
+      ? `🎉 Todos os ${relatorio.total} testes passaram!`
+      : `⚠ ${relatorio.passed}/${relatorio.total} passaram — ${relatorio.failed} falha(s)`;
+    out.appendChild(resumo);
+  </script>
+</body>
+</html>
