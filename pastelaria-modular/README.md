@@ -84,45 +84,6 @@ npm test
 # Navegador: abrir tests/runner.html
 ```
 
----
-
-## Commits Obrigatórios (Parte 13)
-
-```bash
-git checkout -b arquitetura-modular
-
-git add src/shared/
-git commit -m "Separacao da camada shared com EventBus, Logger e AppConfig"
-
-git add src/modules/orders/
-git commit -m "Separacao do modulo de pedidos"
-
-git add src/modules/products/
-git commit -m "Criacao do modulo de produtos"
-
-git add src/modules/payments/
-git commit -m "Criacao da camada de services com Strategy de desconto"
-
-git add src/modules/orders/repositories/ src/modules/payments/repositories/
-git commit -m "Aplicacao do repository pattern"
-
-git add src/modules/orders/controllers/ src/modules/products/controllers/
-git commit -m "Refatoracao dos controllers"
-
-git add src/shared/middlewares/
-git commit -m "Criacao do middleware global de auth e erros"
-
-git add src/modules/auth/
-git commit -m "Implementacao do modulo de autenticacao fake"
-
-git add tests/
-git commit -m "Testes unitarios para arquitetura modular"
-
-git add docs/ diagramas/ README.md
-git commit -m "Documentacao e analise arquitetural completa"
-```
-
----
 
 ## Padrões de Projeto Implementados
 
