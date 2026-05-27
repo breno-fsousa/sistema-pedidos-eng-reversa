@@ -78,24 +78,6 @@ body {
   text-transform: uppercase;
 }
 
-/* =====================================================
-   BADGE DE ARQUITETURA
-   ===================================================== */
-.badge-mvc {
-  display: inline-flex;
-  align-items: center;
-  gap: .35rem;
-  background: rgba(108,99,255,.15);
-  border: 1px solid rgba(108,99,255,.35);
-  color: #9d97ff;
-  font-size: .7rem;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  padding: .25rem .65rem;
-  border-radius: 20px;
-  margin-top: .4rem;
-}
 
 /* =====================================================
    CARDS

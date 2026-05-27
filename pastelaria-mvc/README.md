@@ -63,36 +63,6 @@ npm test
 # Via navegador: abra tests/runner.html
 ```
 
----
-
-## Commits no Git
-
-```bash
-git checkout -b refatoracao-mvc
-
-git add src/models/
-git commit -m "Refatoracao inicial para MVC"
-
-git add src/services/
-git commit -m "Separacao das regras de negocio em services"
-
-git add src/repositories/
-git commit -m "Implementacao do repository pattern"
-
-git add src/views/
-git commit -m "Criacao das views desacopladas"
-
-git add src/services/EventBus.js
-git commit -m "Aplicacao do padrao Observer"
-
-git add tests/
-git commit -m "Testes unitarios completos para arquitetura MVC"
-
-git add .
-git commit -m "Documentacao e analise arquitetural MVC completa"
-```
-
----
 
 ## Parte 7 — Análise Arquitetural
 
