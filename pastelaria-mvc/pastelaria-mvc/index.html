@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pastelaria do Zé — MVC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/views/style.css">
+</head>
+<body>
+
+  <!-- ======= TOAST ======= -->
+  <div id="toast" class="toast"></div>
+
+  <!-- ======= MODAL: PEDIDO FINALIZADO ======= -->
+  <div id="modal-finalizado" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <div class="modal">
+      <h2 id="modal-titulo">🎉 Pedido Finalizado!</h2>
+      <div id="modal-body"></div>
+      <div class="modal-acoes">
+        <a id="btn-whats-cliente" href="#" target="_blank" rel="noopener noreferrer" class="btn-whats">
+          📱 Enviar ao Cliente (WhatsApp)
+        </a>
+        <a id="btn-whats-estab" href="#" target="_blank" rel="noopener noreferrer" class="btn-whats secundario">
+          🏪 Enviar ao Estabelecimento
+        </a>
+        <button id="btn-fechar-modal" class="btn-fechar">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= APLICAÇÃO ======= -->
+  <div class="app">
+
+    <header class="header">
+      <div class="header-inner">
+        <span class="logo-icon" aria-hidden="true">🍴</span>
+        <div>
+          <h1 class="titulo">Pastelaria do Zé</h1>
+          <p class="subtitulo">Sistema de Pedidos</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+
+      <!-- FORMULÁRIO: Adicionar item -->
+      <section class="card form-card" aria-label="Adicionar item ao pedido">
+        <h2 class="card-titulo">Novo Item</h2>
+
+        <div class="form-grupo">
+          <label for="produto">Produto</label>
+          <select id="produto" aria-label="Selecione o produto">
+            <option value="pastel">🥟 Pastel — R$ 5,00</option>
+            <option value="caldo">🍲 Caldo — R$ 7,00</option>
+            <option value="refrigerante">🥤 Refrigerante — R$ 4,00</option>
+            <option value="suco">🧃 Suco — R$ 6,00</option>
+          </select>
+        </div>
+
+        <div class="form-grupo">
+          <label for="qtd">Quantidade</label>
+          <input type="number" id="qtd" placeholder="Ex: 2" min="1" aria-label="Quantidade do produto">
+        </div>
+
+        <button id="btn-adicionar" class="btn btn-primario">＋ Adicionar Item</button>
+      </section>
+
+      <!-- LISTA DE ITENS -->
+      <section class="card lista-card" aria-label="Itens do pedido">
+        <div class="lista-header">
+          <h2 class="card-titulo">Itens do Pedido</h2>
+          <button id="btn-remover" class="btn btn-ghost btn-sm" aria-label="Remover último item">
+            − Remover último
+          </button>
+        </div>
+
+        <ul id="lista" aria-live="polite" aria-label="Lista de itens adicionados">
+          <li class="vazio">Nenhum item adicionado</li>
+        </ul>
+
+        <div class="total-row">
+          <span>Subtotal</span>
+          <span>R$ <strong id="total">0,00</strong></span>
+        </div>
+      </section>
+
+      <!-- CONTATOS WHATSAPP -->
+      <section class="card contatos-card" aria-label="Configurar contatos WhatsApp">
+        <h2 class="card-titulo">Contatos WhatsApp</h2>
+        <p class="hint">
+          Preencha os telefones com DDI para enviar o resumo do pedido
+          automaticamente ao finalizar.
+        </p>
+
+        <div class="form-grupo">
+          <label for="tel-cliente">Telefone do Cliente (com DDI)</label>
+          <input type="tel" id="tel-cliente" placeholder="Ex: 5588999999999">
+        </div>
+        <div class="form-grupo">
+          <label for="tel-estab">Telefone do Estabelecimento</label>
+          <input type="tel" id="tel-estab" placeholder="Ex: 5588888888888">
+        </div>
+      </section>
+
+      <!-- AÇÕES FINAIS -->
+      <div class="acoes">
+        <button id="btn-limpar" class="btn btn-ghost">🗑 Limpar</button>
+        <button id="btn-finalizar" class="btn btn-finalizar">✔ Finalizar Pedido</button>
+      </div>
+
+    </main>
+
+    <footer class="footer">
+      IFCE Boa Viagem · Arquitetura de Sistemas · Padrão MVC
+    </footer>
+
+  </div>
+
+  <!-- =====================================================
+       SCRIPTS — ordem obrigatória de dependência
+       Models → Services → Repository → Controller → View
+       ===================================================== -->
+
+  <!-- Models -->
+  <script src="src/models/Produto.js"></script>
+  <script src="src/models/ItemPedido.js"></script>
+  <script src="src/models/Pedido.js"></script>
+  <script src="src/models/Factories.js"></script>
+
+  <!-- Services -->
+  <script src="src/services/EventBus.js"></script>
+  <script src="src/services/DescontoService.js"></script>
+  <script src="src/services/PedidoService.js"></script>
+
+  <!-- Repository -->
+  <script src="src/repositories/PedidoRepository.js"></script>
+
+  <!-- Controller -->
+  <script src="src/controllers/PedidoController.js"></script>
+
+  <!-- View -->
+  <script src="src/views/PedidoView.js"></script>
+
+  <!-- Bootstrap: instancia Controller e View (ponto de entrada) -->
+  <script>
+    // Ponto de entrada da aplicação MVC.
+    // O Controller é criado primeiro (sem DOM),
+    // depois a View é criada recebendo o Controller como dependência.
+    const controller = new PedidoController();
+    const view       = new PedidoView(controller);
+  </script>
+
+</body>
+</html>
